@@ -1038,14 +1038,14 @@ class FsUtils
     }
 
     /**
-     * Build a directory if it doesn't exist already
+     * Build a directory if it does not exist already
      *
      * @param string $directory
      * @param int $perms
      */
     public static function mkDir($directory, $perms = 0777)
     {
-        if (!is_dir($directory)) {
+        if (!file_exists($directory) && !is_dir($directory)) {
             mkdir($directory, $perms, true);
         }
     }
@@ -1085,6 +1085,35 @@ class FsUtils
     {
         $fileObj = new finfo(FILEINFO_MIME_ENCODING);
         return false === strpos($fileObj->file($filePath), 'binary');
+    }
+
+
+    /**
+     * Windows \ to /
+     *
+     * @param $path
+     * @return mixed
+     */
+    public static function normalizePath($path){
+        return preg_replace(sprintf('~%s+/~', DIRECTORY_SEPARATOR), '/', $path);
+    }
+
+    /**
+     * Same as PHP's file(), but whitespace after line is trimmed
+     *
+     * @param $path
+     * @param bool $noEmpties skip empty lines
+     * @return array
+     */
+    public static function file($path, $noEmpties=false)
+    {
+        $contentArr = array_map(
+            function ($str){
+                return rtrim($str);
+            },
+            file($path)
+        );
+        return $noEmpties ? array_filter($contentArr) : $contentArr;
     }
 
 }
