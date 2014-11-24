@@ -1089,13 +1089,13 @@ class FsUtils
 
 
     /**
-     * Windows \ to /
+     * Windows \ as well as multiple / in any direction => /
      *
      * @param $path
      * @return mixed
      */
     public static function normalizePath($path){
-        return preg_replace(sprintf('~%s+/~', DIRECTORY_SEPARATOR), '/', $path);
+        return preg_replace('~(\\\\|/)+~', '/', $path);
     }
 
     /**
