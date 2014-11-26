@@ -26,7 +26,7 @@ class Utils
      * @setting bool upper, whether or not to include upper case characters, default true
      * @setting bool lower, whether or not to include lower case characters, default true
      * @setting bool number, whether or not to include numbers, default true
-     * @setting bool spec, whether or not to include special characters (!$*@-+), default false
+     * @setting bool spec, whether or not to include special characters, default false
      * @return string $password
      */
     public static function createPassword($settings = array())
@@ -84,5 +84,21 @@ class Utils
         return $value;
     }
 
+    /**
+     * Convert an object to an array
+     *
+     * @param object $object , the object to convert
+     * @return array
+     */
+    public static function objectToArray($object)
+    {
+        if (!is_object($object) && !is_array($object)) {
+            return $object;
+        }
+        if (is_object($object)) {
+            $object = get_object_vars($object);
+        }
+        return array_map(array(self, 'objectToArray'), $object);
+    }
 
 }

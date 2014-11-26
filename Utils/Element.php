@@ -292,7 +292,8 @@ class Element
         if (isset($settings['content'])
             && $settings['content'] !== ''
             && $content_position !== '><'
-            && empty($attributes[$content_position])) {
+            && empty($attributes[$content_position])
+        ) {
             $attributes[$content_position] = strip_tags($settings['content']);
 
             // in 'a', content and href can be identical

@@ -89,7 +89,8 @@ class ArrayUtils
      * @param array $array
      * @return array
      */
-    public static function csvQuote(array $array) {
+    public static function csvQuote(array $array)
+    {
         foreach ($array as &$value) {
             $value = is_array($value) ? self::csvQuote($value) : StringUtils::csvQuote($value);
         }

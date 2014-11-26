@@ -1094,7 +1094,8 @@ class FsUtils
      * @param $path
      * @return mixed
      */
-    public static function normalizePath($path){
+    public static function normalizePath($path)
+    {
         return preg_replace('~(\\\\|/)+~', '/', $path);
     }
 
@@ -1105,7 +1106,7 @@ class FsUtils
      * @param bool $noEmpties skip empty lines
      * @return array
      */
-    public static function file($path, $noEmpties=false)
+    public static function file($path, $noEmpties = false)
     {
         $contentArr = array_map(
             function ($str){

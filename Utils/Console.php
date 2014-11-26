@@ -19,8 +19,8 @@ class Console
      *
      * @var array
      */
-    private $modes   = array('file', 'src', 'html', 'console', 'plain');
-    private $mode    = 'html';
+    private $modes = array('file', 'src', 'html', 'console', 'plain');
+    private $mode = 'html';
     private $logfile = null;
 
     private function __construct()
@@ -56,7 +56,7 @@ class Console
         return $selfObj;
     }
 
-    
+
     /**
      * Dump message
      */
@@ -87,7 +87,7 @@ class Console
 
     /**
      * Clear log file
-     * 
+     *
      * @return mixed
      */
     public static function clearLog()
@@ -101,7 +101,7 @@ class Console
 
     /**
      * Process and format the message
-     * 
+     *
      * @return string
      */
     protected static function getMessage()
@@ -181,7 +181,7 @@ class Console
 
     /**
      * Bring all slashes in the same form. I'm wondering sometimes if this was such a great idea after all.
-     * 
+     *
      * @param $path
      * @param string $slash
      * @return mixed

@@ -113,7 +113,7 @@ class Timer
 
     /**
      * Time format for print
-     * 
+     *
      * @param $time
      * @return string
      */
@@ -126,7 +126,7 @@ class Timer
 
     /**
      * Memory usage in pretty print
-     * 
+     *
      * @param $size
      * @return string
      */
@@ -142,8 +142,8 @@ class Timer
     }
 
     /**
-     * Dump the timer result 
-     * 
+     * Dump the timer result
+     *
      * @param string $message
      */
     public static function write($message = '')
