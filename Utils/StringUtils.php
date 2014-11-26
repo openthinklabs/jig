@@ -43,90 +43,6 @@ class StringUtils
         return $string;
     }
 
-    /**
-     * Trim and remove the byte order mark from a string if applicable
-     *
-     * @param string $string
-     * @param string $charList
-     * @return string
-     */
-    public static function trim($string, $charList = '')
-    {
-        if (substr($string, 0, 3) == pack('CCC', 0xef, 0xbb, 0xbf)) {
-            $string = substr($string, 3);
-        }
-        return $charList ? trim($string, $charList) : trim($string);
-    }
-
-    /**
-     * makes a teaser out of text by character count, stripping off all HTML
-     *
-     * @param $text
-     * @param int $charCount number of characters to extract
-     * @param string $append the string to append, ' …' by default
-     * @internal param string $string original text
-     * @return string $string
-     */
-    public static function teaserByCharCount($text, $charCount = 150, $append = '&nbsp;…')
-    {
-        $text = strip_tags($text);
-        $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
-        $text = self::avoidFrenchLineBreak($text);
-
-        $append = strip_tags($append);
-        $append = html_entity_decode($append, ENT_QUOTES, 'UTF-8');
-        $appendStrlen = mb_strlen($append);
-        if (mb_strlen($text) <= ($charCount + $appendStrlen)) {
-            return $text;
-        }
-
-        // for comparison generate a string without special characters and cut it to the right length
-        $plainText = str_replace(
-            array(
-                '?',
-                '\'',
-                '.',
-                '/',
-                '&',
-                ')',
-                '(',
-                '[',
-                ']',
-                '_',
-                ',',
-                ':',
-                '-',
-                '!',
-                '"',
-                '`',
-                '°',
-                '%',
-                '{',
-                '}',
-                '#',
-                '’',
-                ';',
-                '!',
-                '…',
-                '€'
-            ),
-            'x',
-            $text
-        );
-        $plainText = self::removeSpecChars($plainText, ' ');
-        if (strlen($plainText) >= $charCount + 5) {
-            $plainText = substr($plainText, 0, $charCount + 5);
-            $plainText = substr($plainText, 0, strrpos($plainText, ' '));
-            $plainText = trim(rtrim($plainText, '-,.!?:;'));
-        }
-
-        $word_count = str_word_count($plainText);
-
-        $realTextArr = preg_split('~[\s]+~', $text);
-        $text        = implode(' ', array_slice($realTextArr, 0, $word_count));
-
-        return nl2br(trim(rtrim($text, '-,.!?:;'))) . $append;
-    }
 
     /**
      * In French orthography some marks are preceded by a space which can lead to unwanted line breaks
@@ -249,30 +165,6 @@ class StringUtils
         return strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $camelCasedWord));
     }
 
-    /**
-     * Cast string to the right format
-     *
-     * @param string $value
-     * @return string
-     */
-    public static function typecast($value)
-    {
-        switch (true) {
-            case strtolower($value) === 'true':
-                return true;
-
-            case strtolower($value) === 'false':
-                return false;
-
-            case strtolower($value) === 'null':
-                return null;
-
-            case is_numeric($value):
-                return strpos($value, '.') ? (float)$value : (int)$value;
-        }
-
-        return $value;
-    }
 
     /**
      * Quote a value (mainly for usage in CSV)

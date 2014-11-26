@@ -84,19 +84,6 @@ class ArrayUtils
     }
 
     /**
-     * Cast all values of an array to the right format
-     *
-     * @param array $array
-     * @return array
-     */
-    public static function typecast(array $array) {
-        foreach ($array as &$value) {
-            $value = is_array($value) ? self::typecast($value) : StringUtils::typecast($value);
-        }
-        return $array;
-    }
-
-    /**
      * Quote all values of an array according to their type (mainly for usage in CSV)
      *
      * @param array $array
