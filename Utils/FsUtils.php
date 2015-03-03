@@ -636,6 +636,7 @@ class FsUtils
         'pfm'         => 'application/x-font-type1',
         'afm'         => 'application/x-font-type1',
         'woff'        => 'application/x-font-woff',
+        'woff2'        => 'application/x-font-woff2',
         'arc'         => 'application/x-freearc',
         'spl'         => 'application/x-futuresplash',
         'gca'         => 'application/x-gca-compressed',
@@ -1009,7 +1010,7 @@ class FsUtils
 
     public static function getMimeTypeByExtension($extension)
     {
-        return !empty(self::$mimeList[$extension]) ? self::$mimeList[$extension] : '';
+        return !empty(self::$mimeList[$extension]) ? self::$mimeList[$extension] : 'application/octet-stream';
     }
 
 
@@ -1059,20 +1060,16 @@ class FsUtils
     public static function getMimeType($filePath)
     {
 
-        $fileObj   = new finfo(FILEINFO_MIME);
-        $finfoMime = $fileObj->file($filePath);
+        $fileObj  = new \finfo(FILEINFO_MIME);
+        $fileMime = strtok($fileObj->file($filePath), ';');
+
 
         //Result is often too generic, see if we can find out more
-        if ($finfoMime === 'application/octet-stream') {
-            $section   = bin2hex(file_get_contents($filePath, null, null, 0, 10));
-            $extension = self::getFileExtension($filePath);
-            // @todo Is there a list of available header markers somewhere? Probably to combine into self::$mimeList
-            if (0 === strpos($section, '3082')) {
-                return self::getMimeTypeByExtension($extension);
-            }
+        if (!$fileMime || $fileMime === 'application/octet-stream') {
+            return self::getMimeTypeByExtension(self::getFileExtension($filePath));
         }
 
-        return $finfoMime;
+        return $fileMime;
     }
 
     /**
@@ -1083,7 +1080,7 @@ class FsUtils
      */
     public static function isBinary($filePath)
     {
-        $fileObj = new finfo(FILEINFO_MIME_ENCODING);
+        $fileObj = new \finfo(FILEINFO_MIME_ENCODING);
         return false === strpos($fileObj->file($filePath), 'binary');
     }
 
@@ -1115,6 +1112,20 @@ class FsUtils
             file($path)
         );
         return $noEmpties ? array_filter($contentArr) : $contentArr;
+    }
+
+    /**
+     * @param $size
+     * @return string
+     */
+    public static function formatFileSize($size) {
+        $units = array('B', 'KB', 'MB', 'GB');
+        $i = 0;
+        while ($size >= 1024) {
+            $size /= 1024;
+            $i++;
+        }
+        return number_format($size, 2, '.', ',') . '&nbsp;' . $units[$i];
     }
 
 }
