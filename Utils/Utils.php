@@ -29,7 +29,7 @@ class Utils
      * @setting bool spec, whether or not to include special characters, default false
      * @return string $password
      */
-    public static function createPassword($settings = array())
+    public static function createPassword(array $settings = array())
     {
         $defaults = array(
             'length' => 8,
@@ -55,7 +55,7 @@ class Utils
         }
         $avail_length = strlen($availChars);
         for ($i = 0; $i < $settings['length']; $i++) {
-            $password .= $availChars{rand(0, $avail_length - 1)};
+            $password .= $availChars{mt_rand(0, $avail_length - 1)};
         }
         return $password;
     }
