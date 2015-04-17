@@ -11,6 +11,8 @@
 
 namespace Jig\Utils;
 
+use Exception;
+
 /**
  * ServerUtils
  */

@@ -10,6 +10,8 @@
 
 namespace Jig\Utils;
 
+use Exception;
+
 class Console
 {
 
@@ -108,6 +110,8 @@ class Console
     {
         $selfObj = self::getInstance();
         $format  = 'html';
+        $format_arr = array();
+
         if (!isset($_SERVER['HTTP_HOST']) || $selfObj->mode !== 'html') {
             $format = $selfObj->mode;
         } else {

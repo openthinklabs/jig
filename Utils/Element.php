@@ -11,8 +11,6 @@
 
 namespace Jig\Utils;
 
-use Jig\Utils\StringUtils;
-
 /**
  * Element Generator
  */

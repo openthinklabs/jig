@@ -176,15 +176,15 @@ class StringUtils
     public static function csvQuote($value, array $options = array())
     {
         $options = array_merge(
-            [
+            array(
                 'enclosure' => '"',
                 'escape'    => '\\'
-            ],
+            ),
             $options
         );
         if (!is_numeric($value) && !is_bool($value) && !is_null($value) && !in_array(
                 strtolower($value),
-                ['true', 'false', 'null']
+                array( 'true', 'false', 'null' )
             )
         ) {
             $value = str_replace($options['enclosure'], $options['escape'] . $options['enclosure'], $value);

@@ -18,7 +18,7 @@ class FsUtils
 {
 
     // based on apache's mime list
-    protected static $mimeList = [
+    protected static $mimeList = array(
         'ez'          => 'application/andrew-inset',
         'aw'          => 'application/applixware',
         'atom'        => 'application/atom+xml',
@@ -1001,7 +1001,7 @@ class FsUtils
         'movie'       => 'video/x-sgi-movie',
         'smv'         => 'video/x-smv',
         'ice'         => 'x-conference/x-cooltalk'
-    ];
+    );
 
     public static function getMimeList()
     {
