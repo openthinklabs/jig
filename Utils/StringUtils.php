@@ -233,4 +233,35 @@ class StringUtils
         return $encoded_text;
     }
 
+    /**
+     * Split string to equal length chunks, multibyte safe
+     *
+     * @param $str
+     * @param string $threshold
+     * @param string $glue
+     *
+     * @return string
+     */
+    static public function wrapLongWords( $str, $threshold = '50', $glue = ' ' )
+    {
+        $mblen = mb_strlen( $str );
+        $array = array();
+        for ($i = 0; $i < $mblen; $i ++) {
+            $array[] = mb_substr( $str, $i, 1 );
+        }
+        $n   = 0;
+        $new = '';
+        foreach ($array as $char) {
+            if ($n < $threshold) {
+                $new .= $char;
+            } elseif ($n == $threshold) {
+                $new .= $glue . $char;
+                $n = 0;
+            }
+            $n ++;
+        }
+
+        return $new;
+    }
+
 }
