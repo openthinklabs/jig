@@ -234,34 +234,44 @@ class StringUtils
     }
 
     /**
-     * Split string to equal length chunks, multibyte safe
+     * Split long parts of the string to equal length chunks, multibyte safe
      *
-     * @param $str
+     * @param $input string to be processed
      * @param string $threshold
      * @param string $glue
      *
      * @return string
      */
-    static public function wrapLongWords( $str, $threshold = '50', $glue = ' ' )
+    static public function wrapLongWords( $input, $threshold = '20', $glue = ' ' )
     {
-        $mblen = mb_strlen( $str );
-        $array = array();
-        for ($i = 0; $i < $mblen; $i ++) {
-            $array[] = mb_substr( $str, $i, 1 );
-        }
-        $n   = 0;
-        $new = '';
-        foreach ($array as $char) {
-            if ($n < $threshold) {
-                $new .= $char;
-            } elseif ($n == $threshold) {
-                $new .= $glue . $char;
-                $n = 0;
+        $tokens = explode( $glue, $input );
+        $result = array();
+
+        foreach ($tokens as $str) {
+            $mblen = mb_strlen( $str );
+            if ($mblen < $threshold) {
+                $result[] = $str;
+                continue;
             }
-            $n ++;
+            $array = array();
+            for ($i = 0; $i < $mblen; $i ++) {
+                $array[] = mb_substr( $str, $i, 1 );
+            }
+            $n   = 0;
+            $new = '';
+            foreach ($array as $char) {
+                if ($n <= $threshold) {
+                    $new .= $char;
+                } else {
+                    $result[] = $new;
+                    $new      = '';
+                    $n        = 0;
+                }
+                $n ++;
+            }
         }
 
-        return $new;
+        return implode( $glue, $result );
     }
 
 }
