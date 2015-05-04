@@ -1052,6 +1052,29 @@ class FsUtils
     }
 
     /**
+     * Recursively removes directory
+     *
+     * @param string $directory
+     */
+    public static function rmDir( $directory )
+    {
+        if (is_dir( $directory )) {
+            $objects = scandir( $directory );
+            foreach ($objects as $object) {
+                if ($object !== '.' && $object !== '..') {
+                    if (filetype( $directory . DIRECTORY_SEPARATOR . $object ) === 'dir') {
+                        self::rmDir( $directory . DIRECTORY_SEPARATOR . $object );
+                    } else {
+                        unlink( $directory . DIRECTORY_SEPARATOR . $object );
+                    }
+                }
+            }
+            reset( $objects );
+            rmdir( $directory );
+        }
+    }
+
+    /**
      * Get mime info based on finfo but with the possibility to extend to specific types
      *
      * @param string $filePath
