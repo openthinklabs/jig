@@ -1008,9 +1008,9 @@ class FsUtils
         return self::$mimeList;
     }
 
-    public static function getMimeTypeByExtension($extension)
+    public static function getMimeTypeByExtension($extension, $assumedFileMime = 'application/octet-stream')
     {
-        return !empty(self::$mimeList[$extension]) ? self::$mimeList[$extension] : 'application/octet-stream';
+        return !empty(self::$mimeList[$extension]) ? self::$mimeList[$extension] : $assumedFileMime;
     }
 
 
@@ -1088,8 +1088,8 @@ class FsUtils
 
 
         //Result is often too generic, see if we can find out more
-        if (!$fileMime || $fileMime === 'application/octet-stream') {
-            return self::getMimeTypeByExtension(self::getFileExtension($filePath));
+        if (!$fileMime || $fileMime === 'application/octet-stream' || $fileMime === 'text/plain') {
+            return self::getMimeTypeByExtension(self::getFileExtension($filePath), $fileMime);
         }
 
         return $fileMime;
