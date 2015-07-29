@@ -264,10 +264,13 @@ class StringUtils
                     $new .= $char;
                 } else {
                     $result[] = $new;
-                    $new      = '';
+                    $new      = $char;
                     $n        = 0;
                 }
                 $n ++;
+            }
+            if (end( $result ) !== $new) {
+                $result[] = $new;
             }
         }
 
