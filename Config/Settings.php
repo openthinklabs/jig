@@ -13,7 +13,7 @@
 namespace Jig\Config;
 
 use Jig\Utils\ArrayUtils;
-use Userguide\Tree\TreeFile;
+use Jig\Tree\TreeFile;
 
 class Settings
 {
