@@ -96,7 +96,6 @@ class Settings
         }
     }
 
-
     /**
      * Writes data to the settings. Writing can be done can be done in several ways, i.e. name can either be a
      * a string or a number. Or it can be a string followed by [], which would write the data in an array.
@@ -114,30 +113,8 @@ class Settings
      */
     public static function write($name, $value)
     {
-        $settingsObj = self::getInstance();
-        if (strpos($name, '[]') !== false) {
-            $name                       = substr($name, 0, -2);
-            $settingsObj->data[$name][] = $value;
-            return true;
-        }
-        if (strpos($name, '.') !== false) {
-            $current[0] =& $settingsObj->data;
-            $i          = 1;
-            //create the array name
-            $name = explode('.', $name);
-            foreach ($name as $key) {
-                if (!isset($current[$i - 1][$key])) {
-                    $current[$i - 1][$key] = null;
-                }
-                $current[$i] =& $current[$i - 1][$key];
-                $i++;
-            }
-            //now set the value
-            $current[$i - 2][$key] = $value;
-            return true;
-        }
-        $settingsObj->data[$name] = $value;
-        return true;
+        $settingsObj       = self::getInstance();
+        $settingsObj->data = ArrayUtils::setValue($settingsObj->data, $name, $value);
     }
 
 
@@ -190,25 +167,8 @@ class Settings
     public static function read($name)
     {
         $settingsObj = self::getInstance();
-        if (isset($settingsObj->data[$name])) {
-            return $settingsObj->data[$name];
-        } else if (strpos($name, '.') !== false) {
-            $current[0] =& $settingsObj->data;
-            $i          = 1;
-            $name       = explode('.', $name);
-            $return     = false;
-            foreach ($name as $value) {
-                if (!isset($current[$i - 1][$value])) {
-                    return false;
-                }
-                $return      = $current[$i - 1][$value];
-                $current[$i] =& $current[$i - 1][$value];
-                $i++;
-            }
-            //now return the value
-            return ($return);
-        }
-        return false;
+        $value       = ArrayUtils::getValue($settingsObj->data, $name);
+        return is_null($value) ? false : $value;
     }
 
 

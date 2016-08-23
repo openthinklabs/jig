@@ -234,7 +234,7 @@ class StringUtils
     }
 
     /**
-     * Split long parts of the string to equal length chunks, multibyte safe
+     * Split long parts of the string into equal length chunks, multi-byte safe
      *
      * @param $input string to be processed
      * @param string $threshold
@@ -264,13 +264,10 @@ class StringUtils
                     $new .= $char;
                 } else {
                     $result[] = $new;
-                    $new      = $char;
+                    $new      = '';
                     $n        = 0;
                 }
                 $n ++;
-            }
-            if (end( $result ) !== $new) {
-                $result[] = $new;
             }
         }
 
