@@ -147,7 +147,7 @@ class StringUtils
      */
     public static function camelize($string, $firstToUpper = false)
     {
-        $string = 'x' . strtolower(trim($string));
+        $string = 'x' . strtolower(trim(self::underscorize($string)));
         $string = ucwords(preg_replace('/[\s_-]+/', ' ', $string));
         $string = substr(str_replace(' ', '', $string), 1);
         return $firstToUpper ? ucfirst($string) : $string;
