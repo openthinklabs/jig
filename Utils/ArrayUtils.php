@@ -95,4 +95,70 @@ class ArrayUtils
         return $array;
     }
 
+    /**
+     * Retrieve a - possibly nested - value from an array
+     *
+     * @param array $array
+     * @param $key 'can.be.a.dot.separated.chain.of.nested.keys'
+     * @return mixed|null
+     */
+    public static function getValue(array $array, $key) {
+        if(isset($array[$key])) {
+            return $array[$key];
+        }
+        else if(strpos($key, '.') !== null) {
+            $current[0] =& $array;
+            $i = 1;
+            $key = explode('.', $key);
+            $retVal = null;
+            foreach($key as $value) {
+                if(!isset($current[$i-1][$value])){
+                    return null;
+                }
+                $retVal = $current[$i-1][$value];
+                $current[$i] =& $current[$i-1][$value];
+                $i++;
+            }
+            return $retVal;
+        }
+        return null;
+    }
+
+    /**
+     * Adds data to an array
+     *
+     * @param string
+     * @param mixed
+     * @return bool
+     *
+     * @param $array
+     * @param $key 'can.be.a.dot.separated.chain.of.nested.keys', an [] at the end writes in an array
+     * @param $value of the variable to write
+     * @return array
+     */
+    public static function setValue($array, $key, $value) {
+        if(strpos($key, '[]') !== false) {
+            $key = substr($key, 0, -2);
+            $array[$key][] = $value;
+            return $array;
+        }
+        if(strpos($key, '.') !== false) {
+            $current[0] =& $array;
+            $i = 1;
+            foreach(explode('.', $key) as $part)  {
+                if(!isset($current[$i-1][$part])) {
+                    $current[$i-1][$part] = null;
+                }
+                $current[$i] =& $current[$i-1][$part];
+                $i++;
+            }
+            //now set the value
+            if(!empty($part)){
+                $current[$i-2][$part] = $value;
+            }
+            return $array;
+        }
+        $array[$key] = $value;
+        return $array;
+    }
 }
